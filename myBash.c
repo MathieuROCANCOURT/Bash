@@ -36,12 +36,12 @@ int main(){
 
         pid = fork();
         if (pid == 0){
-            // Split the argument into command and arguments
+            // Diviser l'argument en commande et en arguments
             char* args[BUFSIZ];
             char* token = strtok(argument, " ");
             int i = 0, fd_in, fd_out;
             while (token != NULL) {
-                // Check for input redirection
+                // Vérifier la direction de l'entrée
                 if (strcmp(token, "<") == 0) {
                     token = strtok(NULL, " ");
                     if ((fd_in = open(token, O_RDONLY)) < 0) {
@@ -52,7 +52,7 @@ int main(){
                         perror("dup2");
                         exit(EXIT_FAILURE);
                     }
-                    close(fd_in); // On n'a plus besoin de ce descripteur de fichier
+                    close(fd_in);
                 } else if (strcmp(token, ">") == 0) {
                     token = strtok(NULL, " ");
                     if ((fd_out = open(token, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR)) < 0) {
@@ -63,7 +63,7 @@ int main(){
                         perror("dup2");
                         exit(EXIT_FAILURE);
                     }
-                    close(fd_out); // On n'a plus besoin de ce descripteur de fichier
+                    close(fd_out);
                 } else {
                     args[i] = token;
                     i++;
